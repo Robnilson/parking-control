@@ -2,6 +2,8 @@ package com.api.parking_control.services;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -49,14 +51,19 @@ public class ParkingSpotService {
         return parkingSpotRepository.existsByApartmentAndBlock(apartment, block);
     }
 
-    public List<ParkingSpotModel> findAll() {
+    public Page<ParkingSpotModel> findAll(Pageable pageable) {
         //chama o metodo findAll na classe repository
-        return parkingSpotRepository.findAll();
+        return parkingSpotRepository.findAll(pageable);
     }
 
 
     public Optional<ParkingSpotModel> findById(UUID id) {
         return parkingSpotRepository.findById(id);
+    }
+
+    @Transactional//se algo de errado teremos o rowback
+    public void delete(ParkingSpotModel parkingSpotModel) {
+        parkingSpotRepository.delete(parkingSpotModel);
     }
 }
 
