@@ -3,6 +3,8 @@ package com.api.parking_control.model;
 
 import com.api.parking_control.enums.RoleName;
 import jakarta.persistence.*;
+import org.hibernate.mapping.List;
+import org.hibernate.type.SerializableType;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
@@ -20,6 +22,12 @@ public class RoleModel implements GrantedAuthority, Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     private RoleName roleName;
+
+    @JoinTable(name="TB_USERS_ROLES",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<RoleModel> roles;
+
 
     @Override
     public String getAuthority() {
