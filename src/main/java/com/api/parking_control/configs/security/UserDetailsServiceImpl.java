@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.api.parking_control.model.UserModel;
 import com.api.parking_control.repositories.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 

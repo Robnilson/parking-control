@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.api.parking_control.dtos.ParkingSpotDto;
@@ -36,7 +37,7 @@ public class ParkingSpotController {
     public ParkingSpotController(ParkingSpotService parkingSpotService){
         this.parkingSpotService = parkingSpotService;
     }
-
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @PostMapping
 public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto){
         //faz validaçao se ja nao foi gravado no banco  e retorna com a mensagem
@@ -69,6 +70,7 @@ public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto
     return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
 }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping
     //obtem todos os registros no banco
 
@@ -76,6 +78,7 @@ public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
         Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
@@ -85,6 +88,7 @@ public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteParkingSpot(@PathVariable(value = "id") UUID id) {
         Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
@@ -95,6 +99,7 @@ public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto
         return ResponseEntity.status(HttpStatus.OK).body("Parking Spot deleted.");
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> UpdatePakingSpot(@PathVariable(value = "id") UUID id, @RequestBody ParkingSpotDto parkingSpotDto) {
         Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
