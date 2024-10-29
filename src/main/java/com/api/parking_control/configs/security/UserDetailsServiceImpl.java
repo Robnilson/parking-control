@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     //final UserRepository userRepository;pode ser feito do 2 modos
 
 
-    //busca na base de dado s qual é o usuario do username
+    //busca na base de dados qual é o usuario do username
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserModel userModel = userRepository.findByUsername(username)
