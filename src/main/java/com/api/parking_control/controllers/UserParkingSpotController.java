@@ -7,14 +7,15 @@ import com.api.parking_control.model.UserModel;
 import com.api.parking_control.services.UserParkingSpotService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
+import org.hibernate.query.Page;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,16 +29,18 @@ public class UserParkingSpotController {
 
     public UserParkingSpotController(UserParkingSpotService userParkingSpotService) {
         this.userParkingSpotService = userParkingSpotService;
-    }
-    @PermitAll
-   // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @PostMapping("/admin")
-    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid UserParkingSpotDTO userparkingSpotDTO){
 
-        if(userParkingSpotService.existsByUsername(userparkingSpotDTO.getUsername())){
+    }
+
+    @PermitAll
+    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PostMapping("/admin")
+    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid UserParkingSpotDTO userparkingSpotDTO) {
+
+        if (userParkingSpotService.existsByUsername(userparkingSpotDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: User Name is already in use");
         }
-        if(userParkingSpotService.existsByPassword(userparkingSpotDTO.getPassword())){
+        if (userParkingSpotService.existsByPassword(userparkingSpotDTO.getPassword())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Password is already in use");
         }
 
@@ -46,10 +49,26 @@ public class UserParkingSpotController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userParkingSpotService.save(userModel));
     }
 
+    @PermitAll
+    @GetMapping("/users")
+   public ResponseEntity<?>getAllParkingSpots(Pageable pageable) {
+        return ResponseEntity.ok(userParkingSpotService.findAll(pageable));
+    }
+
+
+
 }
+
 /*
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_UASER')")
+    @GetMapping("/admin")
+    public ResponseEntity<Page<UserModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        return ResponseEntity.status(HttpStatus.OK).body(userParkingSpotService.findAll(pageable));
+    }
+*/
 
 
+/*
     // Cria uma nova instância da classe ParkingSpotModel
     var parkingSpotModel = new ParkingSpotModel();
 

@@ -26,7 +26,6 @@ public class ParkingSpotService {
 
     final ParkingSpotRepository parkingSpotRepository;
 
-    
     public ParkingSpotService(ParkingSpotRepository parkingSpotRepository){
         this.parkingSpotRepository = parkingSpotRepository;
     }
