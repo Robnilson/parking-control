@@ -33,7 +33,7 @@ public class UserParkingSpotController {
     }
 
     @PermitAll
-    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping("/admin")
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid UserParkingSpotDTO userparkingSpotDTO) {
 
@@ -54,30 +54,4 @@ public class UserParkingSpotController {
    public ResponseEntity<?>getAllParkingSpots(Pageable pageable) {
         return ResponseEntity.ok(userParkingSpotService.findAll(pageable));
     }
-
-
-
 }
-
-/*
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_UASER')")
-    @GetMapping("/admin")
-    public ResponseEntity<Page<UserModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-        return ResponseEntity.status(HttpStatus.OK).body(userParkingSpotService.findAll(pageable));
-    }
-*/
-
-
-/*
-    // Cria uma nova instância da classe ParkingSpotModel
-    var parkingSpotModel = new ParkingSpotModel();
-
-    // Copia as propriedades do DTO (ParkingSpotDto) para o Model (ParkingSpotModel)
-    BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-
-    // Define a data de registro como a data e hora atual no fuso horário UTC
-    parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
-
-    // Retorna uma resposta com o status de "Criado" (201) e o objeto salvo
-    return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
-}*/
