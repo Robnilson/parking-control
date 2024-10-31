@@ -1,5 +1,6 @@
 package com.api.parking_control.controllers;
 
+import jakarta.annotation.security.PermitAll;
 import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -39,7 +40,8 @@ public class ParkingSpotController {
         this.parkingSpotService = parkingSpotService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PermitAll
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @PostMapping
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
         //faz validaçao se ja nao foi gravado no banco  e retorna com a mensagem
@@ -68,7 +70,8 @@ public class ParkingSpotController {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    @PermitAll
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping
     //obtem todos os registros no banco
 

@@ -9,6 +9,8 @@ import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 
 @Service
 public class UserParkingSpotService {
@@ -29,19 +31,15 @@ public class UserParkingSpotService {
     }
     public boolean existsByPassword(@NotBlank String Password){
         return userRepository.existsByPassword(Password);
-    }
 
+    }
+    public boolean existsById(@NotBlank String Id){
+        return userRepository.existsById(UUID.fromString(Id));
+    }
+    @Transactional
     public Object findAll(Pageable pageable) {
-        return userRepository.findAll(pageable).getContent();
-    }
-
-   /* @Transactional
-    public Page <UserModel>findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
-    */
 
-    //  public boolean existsByUsername(@NotBlank String username) {
-   //     return userRepository.existsByUsername(username);
- //   }
+
 }

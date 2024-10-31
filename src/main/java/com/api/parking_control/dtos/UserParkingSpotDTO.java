@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 public class UserParkingSpotDTO {
 
     @NotBlank
+    private String id;
+    @NotBlank
     private String username;
     @NotBlank
     private String password;
@@ -18,6 +20,7 @@ public class UserParkingSpotDTO {
 
     public void setPassword(@NotBlank String password){this.password = password;}
 
+    public @NotBlank String getId() {return id; }
 
-
+    public void setId(@NotBlank String id) { this.id = id; }
 }

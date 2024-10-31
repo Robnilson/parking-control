@@ -24,17 +24,21 @@ public class UserModel implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //    @GeneratedValue(strategy = GenerationType.AUTO)
     private java.util.UUID userId;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
+
+
+
     @ManyToMany
     @JoinTable(name = "TB_USERS_ROLES",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<RoleModel> roles;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,7 +68,7 @@ public class UserModel implements UserDetails, Serializable {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();//se nap de certo deixar return true
+        return UserDetails.super.isCredentialsNonExpired();//se nao de certo deixar return true
     }
 
     @Override
